@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Activities</title>
+</head>
+<body>
+    <h1>Your Strava Activities</h1>
+    <ul>
+        {% for activity in activities %}
+        <li>
+            <b>{{ activity['name'] }}</b><br>
+            Date: {{ activity['start_date'] }}<br>
+            Distance: {{ activity['distance'] / 1000 }} km<br>
+            <a href="{{ url_for('map_view') }}">View Map</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
