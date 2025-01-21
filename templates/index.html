@@ -1,12 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strava Activities Map</title>
+    <title>Connect to Strava</title>
 </head>
 <body>
-    <h1>Welcome to Strava Activities Viewer</h1>
-    <p><a href="{{ url_for('connect_to_strava') }}">Click here to connect your Strava account</a></p>
+    <h1>Welcome to the Strava Integration App</h1>
+    <button id="connect-strava">Connect to Strava</button>
+
+    <script>
+        document.getElementById('connect-strava').addEventListener('click', () => {
+            const authWindow = window.open(
+                "{{ url_for('connect_to_strava') }}",
+                "StravaAuth",
+                "width=500,height=600"
+            );
+
+            const timer = setInterval(() => {
+                if (authWindow.closed) {
+                    clearInterval(timer);
+                    alert("Authentication completed!");
+                }
+            }, 500);
+        });
+    </script>
 </body>
 </html>
