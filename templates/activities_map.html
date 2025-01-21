@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Activity Map</title>
+</head>
+<body>
+    <h1>Your Strava Activity Map</h1>
+    <p>Map showing your latest activities.</p>
+    <iframe src="activities_map.html" width="100%" height="600px"></iframe>
+    <br>
+    <a href="{{ url_for('load_activities') }}">Back to Activities</a>
+</body>
+</html>
