@@ -493,9 +493,6 @@ def main():
     print("="*55)
     
     # Configuration - Chargée depuis les variables d'environnement
-    from dotenv import load_dotenv
-    load_dotenv()
-    
     CLIENT_ID = os.environ.get('STRAVA_CLIENT_ID', "145566")  # Valeur par défaut pour compatibilité
     CLIENT_SECRET = os.environ.get('STRAVA_CLIENT_SECRET', "d0949d11cf40903f77545b4646893c7876133585")  # Valeur par défaut pour compatibilité
     REDIRECT_URI = os.environ.get('STRAVA_REDIRECT_URI', "http://localhost")  # URL de redirection
@@ -573,4 +570,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
