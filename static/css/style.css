@@ -51,6 +51,186 @@ html, body {
     box-shadow: 0 4px 8px rgba(252, 76, 2, 0.3);
 }
 
+/* Main Application Layout */
+.row.h-100 {
+    height: calc(100vh - 56px); /* Subtract navbar height */
+    margin: 0;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+    padding: 0;
+    overflow-y: auto;
+    max-height: calc(100vh - 56px);
+}
+
+.sidebar-content {
+    padding: 1rem;
+}
+
+/* Statistics Panel */
+.stat-item {
+    padding: 0.5rem 0;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fc4c02;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Activities List */
+.activities-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.activity-item:hover {
+    background-color: #f8f9fa;
+}
+
+.activity-item.active {
+    background-color: #e3f2fd;
+    border-left: 4px solid #fc4c02;
+}
+
+/* Map Controls */
+.leaflet-control-zoom {
+    border: none !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.leaflet-control-zoom a {
+    background-color: #fff !important;
+    color: #333 !important;
+    border: none !important;
+    border-radius: 4px !important;
+    font-weight: bold !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background-color: #fc4c02 !important;
+    color: #fff !important;
+}
+
+/* Polyline Styles */
+.activity-polyline {
+    stroke: #fc4c02;
+    stroke-width: 3;
+    stroke-opacity: 0.8;
+    fill: none;
+}
+
+/* Utility Classes */
+.text-strava {
+    color: #fc4c02 !important;
+}
+
+.bg-strava {
+    background-color: #fc4c02 !important;
+}
+
+.border-strava {
+    border-color: #fc4c02 !important;
+}
+
+/* Error States */
+.error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+.alert-custom {
+    border-radius: 10px;
+    border: none;
+    padding: 1rem 1.5rem;
+}
+
+.alert-info {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.alert-warning {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.alert-danger {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+/* Custom CSS for Strava Activity Tracker */
+
+/* Global Styles */
+html, body {
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Navigation */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.navbar-brand i {
+    color: #fc4c02;
+}
+
+/* Login Page */
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.btn-primary {
+    background-color: #fc4c02;
+    border-color: #fc4c02;
+    border-radius: 25px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #e63900;
+    border-color: #e63900;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(252, 76, 2, 0.3);
+}
+
 .btn-outline-primary {
     color: #fc4c02;
     border-color: #fc4c02;
@@ -425,3 +605,4 @@ html, body {
     background-color: #ffebee;
     color: #d32f2f;
 }
+
