@@ -33,7 +33,7 @@ strava_client = create_strava_client(app.config)
 @app.route('/')
 def index():
     """Main application page."""
-    if not StravaOAuth.is_token_valid():
+    if not strava_client.is_token_valid():
         return render_template('index.html', authenticated=False)
     
     return render_template('index.html', authenticated=True)
@@ -231,6 +231,7 @@ def api_stats():
 
 if __name__ == '__main__':
     app.run(debug=app.config['DEBUG'], host=app.config['HOST'], port=app.config['PORT'])
+
 
 
 
