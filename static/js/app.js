@@ -7,6 +7,112 @@ class StravaActivityTracker {
     constructor() {
         this.map = null;
         this.activities = [];
+        this.currentPolyline = null;
+        this.init();
+    }
+
+    /**
+     * Initialize the application
+     */
+    init() {
+        this.initializeMap();
+        this.bindEventListeners();
+        this.loadActivities();
+    }
+
+    /**
+     * Initialize Leaflet map
+     */
+    initializeMap() {
+        this.map = L.map('map').setView([46.603354, 1.888334], 6);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 18
+        }).addTo(this.map);
+    }
+
+    /**
+     * Bind event listeners
+     */
+    bindEventListeners() {
+        document.getElementById('activities-list').addEventListener('click', (event) => {
+            if (event.target && event.target.matches('li.activity-item')) {
+                const activityId = event.target.dataset.id;
+                this.displayActivityOnMap(activityId);
+            }
+        });
+    }
+
+    /**
+     * Load activities from API
+     */
+    async loadActivities() {
+        try {
+            const response = await fetch('/api/activities');
+            const activities = await response.json();
+            this.activities = activities;
+            this.renderActivitiesList();
+        } catch (error) {
+            console.error('Error loading activities:', error);
+        }
+    }
+
+    /**
+     * Render activities list
+     */
+    renderActivitiesList() {
+        const listElement = document.getElementById('activities-list');
+        listElement.innerHTML = '';
+        this.activities.forEach(activity => {
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item activity-item';
+            listItem.dataset.id = activity.id;
+            listItem.textContent = `${activity.name} - ${new Date(activity.start_date).toLocaleDateString()}`;
+            listElement.appendChild(listItem);
+        });
+    }
+
+    /**
+     * Display selected activity on map
+     */
+    async displayActivityOnMap(activityId) {
+        const activity = this.activities.find(act => act.id === activityId);
+        if (!activity) return;
+
+        try {
+            const response = await fetch(`/api/activity/${activityId}/polyline`);
+            const data = await response.json();
+            const polyline = L.polyline(L.Polyline.fromEncoded(data.polyline), {
+                color: '#fc4c02',
+                weight: 3
+            }).addTo(this.map);
+
+            if (this.currentPolyline) {
+                this.map.removeLayer(this.currentPolyline);
+            }
+            this.currentPolyline = polyline;
+            this.map.fitBounds(polyline.getBounds());
+        } catch (error) {
+            console.error('Error displaying activity on map:', error);
+        }
+    }
+}
+
+// Initialize the application when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('map')) {
+        new StravaActivityTracker();
+    }
+});
+/**
+ * Strava Activity Tracker - Frontend JavaScript
+ * Handles activity fetching, map visualization, and user interactions
+ */
+
+class StravaActivityTracker {
+    constructor() {
+        this.map = null;
+        this.activities = [];
         this.filteredActivities = [];
         this.currentPolyline = null;
         this.currentActivityId = null;
@@ -506,3 +612,4 @@ document.addEventListener('visibilitychange', () => {
         }
     }
 });
+
