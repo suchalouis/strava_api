@@ -1,4 +1,78 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strava Activity Tracker</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Strava Activity Tracker</a>
+            {% if authenticated %}
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/logout">Logout</a>
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid">
+        {% if not authenticated %}
+        <!-- Login Page -->
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-lg">
+                    <div class="card-body text-center">
+                        <h2 class="card-title mb-4">Welcome</h2>
+                        <p class="card-text mb-4">Log in to Strava to view your activities on an interactive map.</p>
+                        <a href="/login" class="btn btn-primary btn-lg">Log in with Strava</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <!-- Activities and Map -->
+        <div class="row">
+            <!-- Left Panel - Activities List -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">Activities</div>
+                    <ul class="list-group list-group-flush" id="activities-list">
+                        <!-- Activities will be populated by JavaScript -->
+                    </ul>
+                </div>
+            </div>
+            <!-- Right Panel - Map -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Map</div>
+                    <div id="map" style="height: 500px;"></div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Custom JavaScript -->
+    {% if authenticated %}
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% endif %}
+</body>
+</html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -196,3 +270,4 @@
     {% endif %}
 </body>
 </html>
+
