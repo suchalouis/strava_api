@@ -488,10 +488,13 @@ def main():
     print("🚴 CLIENT STRAVA API - RÉCUPÉRATION DES ACTIVITÉS")
     print("="*55)
     
-    # Configuration - À PERSONNALISER
-    CLIENT_ID = "145566"  # Remplacez par votre client ID
-    CLIENT_SECRET = "d0949d11cf40903f77545b4646893c7876133585"  # Remplacez par votre client secret
-    REDIRECT_URI = "http://localhost"  # URL de redirection
+    # Configuration - Chargée depuis les variables d'environnement
+    from dotenv import load_dotenv
+    load_dotenv()
+    
+    CLIENT_ID = os.environ.get('STRAVA_CLIENT_ID', "145566")  # Valeur par défaut pour compatibilité
+    CLIENT_SECRET = os.environ.get('STRAVA_CLIENT_SECRET', "d0949d11cf40903f77545b4646893c7876133585")  # Valeur par défaut pour compatibilité
+    REDIRECT_URI = os.environ.get('STRAVA_REDIRECT_URI', "http://localhost")  # URL de redirection
     
     # Vérification de la configuration
     if CLIENT_ID == "VOTRE_CLIENT_ID_ICI" or CLIENT_SECRET == "VOTRE_CLIENT_SECRET_ICI":
