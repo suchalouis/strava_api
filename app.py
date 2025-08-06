@@ -42,7 +42,7 @@ def index():
 @app.route('/login')
 def login():
     """Initiate Strava OAuth2 login."""
-    auth_url = StravaOAuth.get_authorization_url()
+    auth_url = strava_client.get_authorization_url()
     return redirect(auth_url)
 
 
@@ -231,6 +231,7 @@ def api_stats():
 
 if __name__ == '__main__':
     app.run(debug=app.config['DEBUG'], host=app.config['HOST'], port=app.config['PORT'])
+
 
 
 
