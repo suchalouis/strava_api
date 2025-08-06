@@ -383,13 +383,24 @@ def create_strava_client(app_config) -> StravaAPIClient:
     Factory function to create a StravaAPIClient instance from Flask app config.
     
     Args:
-        app_config: Flask application configuration
+        app_config: Flask application configuration (can be config class or dict)
     
     Returns:
         Configured StravaAPIClient instance
     """
-    return StravaAPIClient(
-        client_id=app_config['STRAVA_CLIENT_ID'],
-        client_secret=app_config['STRAVA_CLIENT_SECRET'],
-        redirect_uri=app_config['STRAVA_REDIRECT_URI']
-    )
+    # Handle both config class and dict access
+    if hasattr(app_config, 'STRAVA_CLIENT_ID'):
+        # Config class
+        return StravaAPIClient(
+            client_id=app_config.STRAVA_CLIENT_ID,
+            client_secret=app_config.STRAVA_CLIENT_SECRET,
+            redirect_uri=app_config.STRAVA_REDIRECT_URI
+        )
+    else:
+        # Dict-like access
+        return StravaAPIClient(
+            client_id=app_config['STRAVA_CLIENT_ID'],
+            client_secret=app_config['STRAVA_CLIENT_SECRET'],
+            redirect_uri=app_config['STRAVA_REDIRECT_URI']
+        )
+
