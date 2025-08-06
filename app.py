@@ -82,7 +82,7 @@ def logout():
 @app.route('/api/activities')
 def api_activities():
     """API endpoint to get user's activities."""
-    if not StravaOAuth.ensure_valid_token():
+    if not strava_client.ensure_valid_token():
         return jsonify({'error': 'Authentication required'}), 401
     
     try:
@@ -93,32 +93,8 @@ def api_activities():
         if cache_key in activities_cache:
             return jsonify(activities_cache[cache_key])
         
-        # Get current year activities
-        current_year = datetime.now().year
-        start_of_year = datetime(current_year, 1, 1, tzinfo=timezone.utc)
-        
-        activities = []
-        page = 1
-        per_page = 50
-        
-        while True:
-            params = {
-                'after': int(start_of_year.timestamp()),
-                'per_page': per_page,
-                'page': page
-            }
-            
-            page_activities = make_strava_request('/athlete/activities', params)
-            
-            if not page_activities:
-                break
-            
-            activities.extend(page_activities)
-            page += 1
-            
-            # Limit to prevent excessive API calls
-            if len(activities) >= 200:
-                break
+        # Get current year activities using refactored client
+        activities = strava_client.get_current_year_activities()
         
         # Process activities for frontend
         processed_activities = []
@@ -230,6 +206,7 @@ def api_stats():
 
 if __name__ == '__main__':
     app.run(debug=app.config['DEBUG'], host=app.config['HOST'], port=app.config['PORT'])
+
 
 
 
