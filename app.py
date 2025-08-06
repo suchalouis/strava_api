@@ -11,11 +11,16 @@ from datetime import datetime, timezone
 import json
 from typing import Dict, List, Optional
 import pandas as pd
+from config import get_config
 
 app = Flask(__name__)
 
-# Configuration will be loaded from config.py
-app.config.from_object('config')
+# Load configuration based on environment
+config_class = get_config()
+app.config.from_object(config_class)
+
+# Validate configuration on startup
+config_class.validate_config()
 
 # In-memory cache for activities (simple implementation)
 activities_cache = {}
@@ -313,3 +318,4 @@ def api_stats():
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
+
