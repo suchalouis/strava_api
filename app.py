@@ -59,9 +59,8 @@ def callback():
         return "No authorization code received", 400
     
     try:
-        # Exchange code for tokens
-        token_data = StravaOAuth.exchange_token(code)
-        session['strava_token'] = token_data
+        # Exchange code for tokens using refactored client
+        strava_client.exchange_token(code)
         
         # Clear activities cache when new user logs in
         activities_cache.clear()
@@ -231,6 +230,7 @@ def api_stats():
 
 if __name__ == '__main__':
     app.run(debug=app.config['DEBUG'], host=app.config['HOST'], port=app.config['PORT'])
+
 
 
 
