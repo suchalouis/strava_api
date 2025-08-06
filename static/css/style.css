@@ -1,0 +1,427 @@
+/* Custom CSS for Strava Activity Tracker */
+
+/* Global Styles */
+html, body {
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Navigation */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.navbar-brand i {
+    color: #fc4c02;
+}
+
+/* Login Page */
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.btn-primary {
+    background-color: #fc4c02;
+    border-color: #fc4c02;
+    border-radius: 25px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #e63900;
+    border-color: #e63900;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(252, 76, 2, 0.3);
+}
+
+.btn-outline-primary {
+    color: #fc4c02;
+    border-color: #fc4c02;
+}
+
+.btn-outline-primary:hover {
+    background-color: #fc4c02;
+    border-color: #fc4c02;
+}
+
+/* Main Application Layout */
+.row.h-100 {
+    height: calc(100vh - 56px); /* Subtract navbar height */
+    margin: 0;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+    padding: 0;
+    overflow-y: auto;
+    max-height: calc(100vh - 56px);
+}
+
+.sidebar-content {
+    padding: 1rem;
+}
+
+/* Statistics Panel */
+.stat-item {
+    padding: 0.5rem 0;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fc4c02;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Activities List */
+.activities-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.activity-item:hover {
+    background-color: #f8f9fa;
+}
+
+.activity-item.active {
+    background-color: #e3f2fd;
+    border-left: 4px solid #fc4c02;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-name {
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+}
+
+.activity-meta {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+}
+
+.activity-stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+.activity-stat {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.activity-type-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+}
+
+.type-run {
+    background-color: #e8f5e8;
+    color: #2e7d32;
+}
+
+.type-ride {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.type-walk {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.type-hike {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.type-swim {
+    background-color: #e0f2f1;
+    color: #00796b;
+}
+
+.type-default {
+    background-color: #f5f5f5;
+    color: #616161;
+}
+
+/* Map Container */
+.map-container {
+    padding: 0;
+}
+
+.map-view {
+    height: calc(100vh - 56px - 60px); /* Subtract navbar and card header */
+    width: 100%;
+    border-radius: 0 0 15px 15px;
+}
+
+.map-placeholder {
+    height: calc(100vh - 56px - 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    border-radius: 0 0 15px 15px;
+}
+
+/* Loading Spinners */
+.spinner-border {
+    color: #fc4c02;
+}
+
+/* Form Controls */
+.form-select {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-select:focus {
+    border-color: #fc4c02;
+    box-shadow: 0 0 0 0.2rem rgba(252, 76, 2, 0.25);
+}
+
+/* Card Headers */
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid #dee2e6;
+    font-weight: 600;
+    padding: 1rem;
+}
+
+.card-header h5 {
+    margin: 0;
+    color: #495057;
+}
+
+.card-header i {
+    color: #fc4c02;
+    margin-right: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .row.h-100 {
+        height: auto;
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        max-height: 50vh;
+        order: 2;
+    }
+    
+    .map-container {
+        order: 1;
+        min-height: 50vh;
+    }
+    
+    .map-view {
+        height: 50vh;
+    }
+    
+    .map-placeholder {
+        height: 50vh;
+    }
+    
+    .activities-container {
+        max-height: 300px;
+    }
+    
+    .sidebar-content {
+        padding: 0.5rem;
+    }
+    
+    .activity-item {
+        padding: 0.75rem;
+    }
+    
+    .stat-value {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .activity-stats {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .activity-type-badge {
+        position: static;
+        align-self: flex-start;
+        margin-top: 0.5rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+/* Custom Scrollbar */
+.activities-container::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.activities-container::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.activities-container::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.activities-container::-webkit-scrollbar-thumb:hover,
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-in {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Map Controls */
+.leaflet-control-zoom {
+    border: none !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.leaflet-control-zoom a {
+    background-color: #fff !important;
+    color: #333 !important;
+    border: none !important;
+    border-radius: 4px !important;
+    font-weight: bold !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background-color: #fc4c02 !important;
+    color: #fff !important;
+}
+
+/* Polyline Styles */
+.activity-polyline {
+    stroke: #fc4c02;
+    stroke-width: 3;
+    stroke-opacity: 0.8;
+    fill: none;
+}
+
+/* Utility Classes */
+.text-strava {
+    color: #fc4c02 !important;
+}
+
+.bg-strava {
+    background-color: #fc4c02 !important;
+}
+
+.border-strava {
+    border-color: #fc4c02 !important;
+}
+
+/* Error States */
+.error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+.alert-custom {
+    border-radius: 10px;
+    border: none;
+    padding: 1rem 1.5rem;
+}
+
+.alert-info {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.alert-warning {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.alert-danger {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
