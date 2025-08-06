@@ -12,6 +12,7 @@ import json
 from typing import Dict, List, Optional
 import pandas as pd
 from config import get_config
+from utils.strava_api import create_strava_client
 
 app = Flask(__name__)
 
@@ -318,5 +319,6 @@ def api_stats():
 
 if __name__ == '__main__':
     app.run(debug=app.config['DEBUG'], host=app.config['HOST'], port=app.config['PORT'])
+
 
 
