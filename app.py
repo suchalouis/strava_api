@@ -7,12 +7,19 @@ Provides OAuth2 authentication, activity visualization, and map integration.
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import os
 import requests
+import logging
 from datetime import datetime, timezone
 import json
 from typing import Dict, List, Optional
 import pandas as pd
 from config import get_config
 from utils.strava_api import create_strava_client
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 
 app = Flask(__name__)
 
@@ -82,20 +89,27 @@ def logout():
 @app.route('/api/activities')
 def api_activities():
     """API endpoint to get user's activities."""
+    app.logger.info("Received request for activities")
+    
     if not strava_client.ensure_valid_token():
+        app.logger.warning("Token validation failed - authentication required")
         return jsonify({'error': 'Authentication required'}), 401
     
     try:
         # Check cache first
         user_id = session['strava_token'].get('athlete', {}).get('id', 'unknown')
         cache_key = f"activities_{user_id}"
+        app.logger.info(f"Checking cache for user {user_id}")
         
         if cache_key in activities_cache:
+            app.logger.info("Returning activities from cache")
             return jsonify(activities_cache[cache_key])
         
+        app.logger.info("Cache miss - fetching activities from Strava API")
         # Get current year activities using refactored client
         activities = strava_client.get_current_year_activities()
         
+        app.logger.info(f"Processing {len(activities)} activities for frontend")
         # Process activities for frontend
         processed_activities = []
         for activity in activities:

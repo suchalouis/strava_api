@@ -19,7 +19,7 @@ class Config:
     # Strava API configuration
     STRAVA_CLIENT_ID = os.environ.get('STRAVA_CLIENT_ID') or '145566'
     STRAVA_CLIENT_SECRET = os.environ.get('STRAVA_CLIENT_SECRET') or 'd0949d11cf40903f77545b4646893c7876133585'
-    STRAVA_REDIRECT_URI = os.environ.get('STRAVA_REDIRECT_URI') or 'http://localhost:5000/callback'
+    STRAVA_REDIRECT_URI = os.environ.get('STRAVA_REDIRECT_URI') or 'http://localhost:5002/callback'
     
     # Application settings
     DEBUG = os.environ.get('FLASK_DEBUG', 'False').lower() in ['true', '1', 'yes']
