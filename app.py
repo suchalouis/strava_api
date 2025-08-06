@@ -26,96 +26,8 @@ config_class.validate_config()
 # In-memory cache for activities (simple implementation)
 activities_cache = {}
 
-class StravaOAuth:
-    """Handles Strava OAuth2 authentication for Flask sessions."""
-    
-    BASE_URL = "https://www.strava.com/api/v3"
-    AUTH_URL = "https://www.strava.com/oauth/authorize"
-    TOKEN_URL = "https://www.strava.com/oauth/token"
-    
-    @staticmethod
-    def get_authorization_url():
-        """Generate OAuth2 authorization URL."""
-        params = {
-            'client_id': app.config['STRAVA_CLIENT_ID'],
-            'redirect_uri': app.config['STRAVA_REDIRECT_URI'],
-            'response_type': 'code',
-            'scope': 'read,activity:read_all',
-            'approval_prompt': 'auto'
-        }
-        
-        param_string = "&".join([f"{k}={v}" for k, v in params.items()])
-        return f"{StravaOAuth.AUTH_URL}?{param_string}"
-    
-    @staticmethod
-    def exchange_token(authorization_code: str) -> Dict:
-        """Exchange authorization code for access tokens."""
-        data = {
-            'client_id': app.config['STRAVA_CLIENT_ID'],
-            'client_secret': app.config['STRAVA_CLIENT_SECRET'],
-            'code': authorization_code,
-            'grant_type': 'authorization_code'
-        }
-        
-        response = requests.post(StravaOAuth.TOKEN_URL, data=data)
-        response.raise_for_status()
-        return response.json()
-    
-    @staticmethod
-    def refresh_access_token(refresh_token: str) -> Dict:
-        """Refresh expired access token."""
-        data = {
-            'client_id': app.config['STRAVA_CLIENT_ID'],
-            'client_secret': app.config['STRAVA_CLIENT_SECRET'],
-            'refresh_token': refresh_token,
-            'grant_type': 'refresh_token'
-        }
-        
-        response = requests.post(StravaOAuth.TOKEN_URL, data=data)
-        response.raise_for_status()
-        return response.json()
-    
-    @staticmethod
-    def is_token_valid() -> bool:
-        """Check if current session token is valid."""
-        if 'strava_token' not in session:
-            return False
-        
-        token_data = session['strava_token']
-        expires_at = token_data.get('expires_at', 0)
-        
-        return datetime.now().timestamp() < expires_at
-    
-    @staticmethod
-    def ensure_valid_token():
-        """Ensure we have a valid token, refresh if necessary."""
-        if not StravaOAuth.is_token_valid():
-            if 'strava_token' in session and 'refresh_token' in session['strava_token']:
-                try:
-                    token_data = StravaOAuth.refresh_access_token(session['strava_token']['refresh_token'])
-                    session['strava_token'] = token_data
-                    return True
-                except:
-                    session.pop('strava_token', None)
-                    return False
-            return False
-        return True
-
-
-def make_strava_request(endpoint: str, params: Dict = None) -> Dict:
-    """Make authenticated request to Strava API."""
-    if not StravaOAuth.ensure_valid_token():
-        raise Exception("Invalid or expired token")
-    
-    headers = {
-        'Authorization': f"Bearer {session['strava_token']['access_token']}"
-    }
-    
-    url = f"{StravaOAuth.BASE_URL}{endpoint}"
-    response = requests.get(url, headers=headers, params=params or {})
-    response.raise_for_status()
-    
-    return response.json()
+# Create Strava client instance
+strava_client = create_strava_client(app.config)
 
 
 @app.route('/')
@@ -319,6 +231,7 @@ def api_stats():
 
 if __name__ == '__main__':
     app.run(debug=app.config['DEBUG'], host=app.config['HOST'], port=app.config['PORT'])
+
 
 
 
