@@ -1,3 +1,86 @@
+import requests
+from flask import session
+from typing import List, Dict
+
+class StravaAPIClient:
+    """
+    Client for interacting with Strava API using OAuth2 with Flask session storage.
+    """
+    BASE_URL = "https://www.strava.com/api/v3"
+    AUTH_URL = "https://www.strava.com/oauth/authorize"
+    TOKEN_URL = "https://www.strava.com/oauth/token"
+
+    def __init__(self, client_id: str, client_secret: str, redirect_uri: str):
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.redirect_uri = redirect_uri
+
+    def get_authorization_url(self, scopes: List[str] = None) -> str:
+        if scopes is None:
+            scopes = ["read", "activity:read_all"]
+        scope_string = ",".join(scopes)
+        params = {
+            "client_id": self.client_id,
+            "redirect_uri": self.redirect_uri,
+            "response_type": "code",
+            "scope": scope_string,
+            "approval_prompt": "auto"
+        }
+        param_string = "&".join([f"{k}={v}" for k, v in params.items()])
+        return f"{self.AUTH_URL}?{param_string}"
+
+    def exchange_token(self, authorization_code: str) -> Dict:
+        data = {
+            "client_id": self.client_id,
+            "client_secret": self.client_secret,
+            "code": authorization_code,
+            "grant_type": "authorization_code"
+        }
+        response = requests.post(self.TOKEN_URL, data=data)
+        response.raise_for_status()
+        tokens = response.json()
+        session['strava_token'] = tokens
+        return tokens
+
+    def refresh_token(self) -> Dict:
+        refresh_token = session['strava_token'].get('refresh_token')
+        data = {
+            "client_id": self.client_id,
+            "client_secret": self.client_secret,
+            "grant_type": "refresh_token",
+            "refresh_token": refresh_token
+        }
+        response = requests.post(self.TOKEN_URL, data=data)
+        response.raise_for_status()
+        tokens = response.json()
+        session['strava_token'] = tokens
+        return tokens
+
+    def get_activities(self) -> List[Dict]:
+        access_token = session['strava_token'].get('access_token')
+        headers = {
+            "Authorization": f"Bearer {access_token}"
+        }
+        response = requests.get(f"{self.BASE_URL}/athlete/activities", headers=headers)
+        response.raise_for_status()
+        return response.json()
+
+    def calculate_statistics(self, activities: List[Dict]) -> Dict:
+        total_distance = sum(activity.get('distance', 0) for activity in activities)
+        total_time = sum(activity.get('moving_time', 0) for activity in activities)
+        total_elevation = sum(activity.get('total_elevation_gain', 0) for activity in activities)
+        return {
+            "total_distance": total_distance,
+            "total_time": total_time,
+            "total_elevation": total_elevation
+        }
+
+def create_strava_client(app_config) -> StravaAPIClient:
+    return StravaAPIClient(
+        client_id=app_config['STRAVA_CLIENT_ID'],
+        client_secret=app_config['STRAVA_CLIENT_SECRET'],
+        redirect_uri=app_config['STRAVA_REDIRECT_URI']
+    )
 #!/usr/bin/env python3
 """
 Strava API Client for Web Application
@@ -403,4 +486,5 @@ def create_strava_client(app_config) -> StravaAPIClient:
             client_secret=app_config['STRAVA_CLIENT_SECRET'],
             redirect_uri=app_config['STRAVA_REDIRECT_URI']
         )
+
 
