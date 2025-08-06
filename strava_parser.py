@@ -16,6 +16,10 @@ from urllib.parse import urlparse, parse_qs
 from datetime import datetime, timezone
 from typing import Dict, List, Optional, Tuple
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file if it exists
+load_dotenv()
 
 class StravaAPIClient:
     """Client pour interagir avec l'API Strava en utilisant OAuth2."""
@@ -569,3 +573,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
