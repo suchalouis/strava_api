@@ -131,12 +131,12 @@ def api_activities():
 @app.route('/api/activity/<int:activity_id>/polyline')
 def api_activity_polyline(activity_id):
     """API endpoint to get activity polyline data."""
-    if not StravaOAuth.ensure_valid_token():
+    if not strava_client.ensure_valid_token():
         return jsonify({'error': 'Authentication required'}), 401
     
     try:
-        # Get detailed activity data
-        activity_detail = make_strava_request(f'/activities/{activity_id}')
+        # Get detailed activity data using refactored client
+        activity_detail = strava_client.get_activity_detail(activity_id)
         
         polyline_data = activity_detail.get('map', {}).get('summary_polyline')
         
@@ -206,6 +206,7 @@ def api_stats():
 
 if __name__ == '__main__':
     app.run(debug=app.config['DEBUG'], host=app.config['HOST'], port=app.config['PORT'])
+
 
 
 
