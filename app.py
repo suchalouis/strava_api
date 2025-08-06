@@ -158,7 +158,7 @@ def api_activity_polyline(activity_id):
 @app.route('/api/stats')
 def api_stats():
     """API endpoint to get activity statistics."""
-    if not StravaOAuth.ensure_valid_token():
+    if not strava_client.ensure_valid_token():
         return jsonify({'error': 'Authentication required'}), 401
     
     try:
@@ -206,6 +206,7 @@ def api_stats():
 
 if __name__ == '__main__':
     app.run(debug=app.config['DEBUG'], host=app.config['HOST'], port=app.config['PORT'])
+
 
 
 
