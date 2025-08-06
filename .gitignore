@@ -2,3 +2,4 @@
 
 local_app.py
 /.venv
+*.csv

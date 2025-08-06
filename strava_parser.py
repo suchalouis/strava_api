@@ -294,8 +294,8 @@ class StravaAPIClient:
                 'max_heartrate': activity.get('max_heartrate'),
                 'commute': activity.get('commute', False),
                 'trainer': activity.get('trainer', False),
-                'start_latitude': activity.get('start_latlng', [None, None])[0],
-                'start_longitude': activity.get('start_latlng', [None, None])[1]
+                'start_latitude': activity.get('start_latlng')[0] if activity.get('start_latlng') else None,
+                'start_longitude': activity.get('start_latlng')[1] if activity.get('start_latlng') else None
             }
             data.append(record)
         
